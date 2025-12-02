@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="anchorPane_main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="370.0" prefWidth="410.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UsersPaneController">
+   <children>
+      <VBox prefHeight="370.0" prefWidth="410.0">
+         <children>
+            <ListView fx:id="listview_users" prefHeight="290.0" prefWidth="370.0" />
+            <HBox alignment="CENTER" prefHeight="40.0" prefWidth="370.0" spacing="20.0">
+               <children>
+                  <Button fx:id="btn_delete" mnemonicParsing="false" onMouseClicked="#handleDeleteUser" text="Apagar" />
+                  <Button fx:id="btn_create" mnemonicParsing="false" onMouseClicked="#handleCreateUser" text="Criar" />
+                  <Button fx:id="btn_change_password" mnemonicParsing="false" onMouseClicked="#handleChangePassword" text="Trocar senha" />
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </VBox>
+   </children>
+</AnchorPane>

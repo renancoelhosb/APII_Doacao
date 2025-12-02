@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane id="AnchorPane" fx:id="anchorPane_main" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserPaneController">
+   <children>
+      <AnchorPane prefHeight="400.0" prefWidth="190.0">
+         <children>
+            <VBox alignment="CENTER" prefHeight="400.0" prefWidth="191.0" spacing="20.0">
+               <children>
+                  <Button fx:id="btn_stock" mnemonicParsing="false" onMouseClicked="#handleStock" prefHeight="30.0" prefWidth="100.0" style="-fx-border-radius: 20%;" text="Estoque" textAlignment="CENTER" textFill="#a1a1a1" />
+                  <Button fx:id="btn_requests" mnemonicParsing="false" onMouseClicked="#handleRequests" prefHeight="30.0" prefWidth="100.0" style="-fx-border-radius: 20%;" text="Solicitações" textAlignment="CENTER" textFill="#a1a1a1" />
+                  <Button fx:id="btn_users" mnemonicParsing="false" onMouseClicked="#handleUsers" prefHeight="30.0" prefWidth="100.0" style="-fx-border-radius: 20%;" text="Usuários" textAlignment="CENTER" textFill="#a1a1a1" />
+                  <Button fx:id="btn_donors" mnemonicParsing="false" onMouseClicked="#handleDonors" prefHeight="30.0" prefWidth="100.0" style="-fx-border-radius: 20%;" text="Doadores" textAlignment="CENTER" textFill="#a1a1a1" />
+                  <Button fx:id="btn_receivers" mnemonicParsing="false" onMouseClicked="#handleReceivers" prefHeight="30.0" prefWidth="100.0" style="-fx-border-radius: 20%;" text="Receptores" textAlignment="CENTER" textFill="#a1a1a1" />
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+      <VBox layoutX="191.0" prefHeight="400.0" prefWidth="410.0">
+         <children>
+            <AnchorPane prefHeight="400.0" prefWidth="410.0">
+               <children>
+                  <VBox prefHeight="400.0" prefWidth="410.0">
+                     <children>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="200.0" spacing="20.0">
+                           <children>
+                              <Label fx:id="label_id" text="&lt;user&gt;" />
+                              <Button fx:id="btn_logout" mnemonicParsing="false" onMouseClicked="#handleLogout" text="Sair" />
+                           </children>
+                           <padding>
+                              <Insets left="20.0" right="20.0" />
+                           </padding>
+                        </HBox>
+                        <AnchorPane fx:id="anchorPane_expose" prefHeight="370.0" prefWidth="410.0" />
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

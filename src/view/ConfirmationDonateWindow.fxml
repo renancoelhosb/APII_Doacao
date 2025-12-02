@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="100.0" prefWidth="250.0" style="-fx-background-position: center;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ConfirmationDonateWindowController">
+   <children>
+      <AnchorPane prefHeight="100.0" prefWidth="250.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="250.0">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="68.0" prefWidth="166.0">
+                     <children>
+                        <Label prefHeight="18.0" prefWidth="224.0" text="Doação recebida!">
+                           <font>
+                              <Font name="Comic Sans MS Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="66.0" prefWidth="186.0" text="Envie os alimentos para a instituição em até 48h" wrapText="true">
+                           <font>
+                              <Font name="Comic Sans MS" size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <ImageView fitHeight="66.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/icon_exclamation.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </ImageView>
+               </children>
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+            </HBox>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
