@@ -35,7 +35,7 @@ public class ControllerUsuarios {
 
     public boolean removeUsuario(String nome) {
         Usuario u = getUsuario(nome);
-        if (u != null) {
+        if (u != null && !(u.isMaster())) {
             return this.usuarios.remove(u);
         }
         return false;
