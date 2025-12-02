@@ -1,6 +1,17 @@
 package controller;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -25,6 +36,19 @@ public class MainPaneController {
 
     @FXML
     private Button btn_receive;
+
+    public void initialize() {
+        try {
+            FileInputStream users = new FileInputStream("users.ser");
+            ObjectInputStream ois = new ObjectInputStream(users);
+            ControllerUsers controllerUsers = (ControllerUsers) ois.readObject();
+            users.close();
+            ois.close();
+
+        } catch (IOException | ClassNotFoundException e) {
+            openLoginForMasterUserSetup();
+        }
+    }
 
     @FXML
     void handleMoveToDonatePane(MouseEvent event) {
@@ -61,9 +85,14 @@ public class MainPaneController {
             newStage.showAndWait();
 
             if (loginController.isAuthenticated()) {
-                pane = (AnchorPane)FXMLLoader.load(getClass().getResource("/view/UserPane.fxml"));
+                FXMLLoader userPaneLoader = new FXMLLoader(getClass().getResource("/view/UserPane.fxml"));
+                AnchorPane userPane = (AnchorPane) userPaneLoader.load();
+                UserPaneController userController = userPaneLoader.getController();
+                
+                userController.setLoggedInUser(loginController.getAuthenticatedUser());
+                
                 Scene scene = this.anchorPane_main.getScene();
-                scene.setRoot(pane);
+                scene.setRoot(userPane);
             }
 
         } catch (IOException e) {
@@ -80,6 +109,65 @@ public class MainPaneController {
             scene = this.anchorPane_main.getScene();
             scene.setRoot(pane);
             
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private ControllerUsers rescueUserController() {
+        try {
+            ControllerUsers controllerUsers;
+            FileInputStream flow = new FileInputStream("users.ser");
+            ObjectInputStream readControllerUsers = new ObjectInputStream(flow);
+            controllerUsers = (ControllerUsers)readControllerUsers.readObject();
+            flow.close();
+            readControllerUsers.close();
+            return controllerUsers;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private void openLoginForMasterUserSetup() {
+        // garante que a cena/Stage já esteja disponível
+        if (this.anchorPane_main.getScene() == null) {
+            Platform.runLater(this::openLoginForMasterUserSetup);
+            return;
+        }
+
+        AnchorPane pane;
+        Stage newStage;
+        Stage currentStage;
+        CreateLoginMasterWindowController loginMasterController;
+        FXMLLoader loader;
+        try {
+            currentStage = (Stage) this.anchorPane_main.getScene().getWindow();
+            loader = new FXMLLoader(getClass().getResource("/view/CreateLoginMasterWindow.fxml"));
+            pane = (AnchorPane) loader.load();
+            loginMasterController = loader.getController();
+            newStage = new Stage();
+            newStage.initOwner(currentStage);
+            newStage.initModality(javafx.stage.Modality.WINDOW_MODAL);
+            newStage.setScene(new javafx.scene.Scene(pane));
+            newStage.setTitle("Configuração inicial - DoAção");
+            newStage.setResizable(false);
+            newStage.showAndWait();
+            if (loginMasterController.isCreatedMasterUser()) {
+                ControllerUsers controllerUsers = new ControllerUsers();
+                controllerUsers.createUsuario(loginMasterController.getUsername(), loginMasterController.getPassword(), true);
+                try {
+                    FileOutputStream flow = new FileOutputStream("users.ser");
+                    ObjectOutputStream writeFile = new ObjectOutputStream(flow);
+                    writeFile.writeObject(controllerUsers);
+                    writeFile.close();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -78,13 +78,11 @@ public class RequestsPaneController {
         AnchorPane pane;
         Stage newStage;
         Stage currentStage;
-        LoginWindowController controller;   //// Not used but kept for consistency
         FXMLLoader loader;
         try {
             currentStage = (Stage)((Node) event.getSource()).getScene().getWindow();
             loader = new FXMLLoader(getClass().getResource("/view/Popup.fxml"));
             pane = (AnchorPane) loader.load();
-            controller = loader.getController();
             newStage = new Stage();
             newStage.initOwner(currentStage);
             newStage.initModality(Modality.WINDOW_MODAL);

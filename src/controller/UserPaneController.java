@@ -1,6 +1,8 @@
 package controller;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -38,6 +40,17 @@ public class UserPaneController {
 
     @FXML
     private Label label_id;
+
+    public void setLoggedInUser(String username) {
+        label_id.setText(username);
+    }
+
+    @FXML
+    void inicialize() {
+        
+        label_id.setText("Usuário: ");
+
+    }
 
     @FXML
     void handleDonors(MouseEvent event) {
@@ -106,6 +119,22 @@ public class UserPaneController {
         } catch (IOException ex) {
             System.out.println("Erro ao carregar FXML");
         }
+    }
+
+    private ControllerUsers rescueUserController() {
+        try {
+            ControllerUsers controllerUsers;
+            FileInputStream flow = new FileInputStream("users.ser");
+            ObjectInputStream readControllerUsers = new ObjectInputStream(flow);
+            controllerUsers = (ControllerUsers)readControllerUsers.readObject();
+            flow.close();
+            readControllerUsers.close();
+            return controllerUsers;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

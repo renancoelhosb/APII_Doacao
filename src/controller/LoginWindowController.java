@@ -1,5 +1,10 @@
 package controller;
 
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+
+import javax.swing.JOptionPane;
+
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -8,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import model.Usuario;
 
 public class LoginWindowController {
 
@@ -28,8 +34,30 @@ public class LoginWindowController {
 
     private boolean authenticated;
 
+    private String authenticatedUser;
+
     public boolean isAuthenticated() {
         return authenticated;
+    }
+
+    public String getAuthenticatedUser() {
+        return authenticatedUser;
+    }
+
+    private ControllerUsers rescueUserController() {
+        try {
+            ControllerUsers controllerUsers;
+            FileInputStream flow = new FileInputStream("users.ser");
+            ObjectInputStream readControllerUsers = new ObjectInputStream(flow);
+            controllerUsers = (ControllerUsers)readControllerUsers.readObject();
+            flow.close();
+            readControllerUsers.close();
+            return controllerUsers;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @FXML
@@ -42,11 +70,20 @@ public class LoginWindowController {
     void handleLogin(MouseEvent event) {
         String username = textField_user.getText();
         String password = textField_password.getText();
+        ControllerUsers controllerUsers = rescueUserController();
+        Usuario user = controllerUsers.getUsuario(username);
 
-        if (username.isEmpty() && password.isEmpty()) {
+        if (user != null && password.equals(user.getSenha())) {
             authenticated = true;
+            authenticatedUser = username;
             handleGoBackToMainPane(event);
         } else {
+            JOptionPane.showMessageDialog(
+            null,
+            user.getSenha(),
+            "Erro",
+            JOptionPane.ERROR_MESSAGE
+            );
             authenticated = false;
         }
     }
