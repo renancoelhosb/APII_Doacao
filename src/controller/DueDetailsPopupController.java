@@ -37,13 +37,9 @@ public class DueDetailsPopupController {
 
     private Item item;
 
-    /**
-     * Recebe o Item e popula a tabela com seus vencimentos
-     */
     public void setItem(Item item) {
         this.item = item;
         
-        // Filtra vencimentos com quantidade maior que zero
         ArrayList<Vencimento> vencimentosValidos = new ArrayList<>();
         for (Vencimento v : item.getVencimentos()) {
             if (v.getQtd() > 0) {
@@ -51,7 +47,6 @@ public class DueDetailsPopupController {
             }
         }
         
-        // Se não houver vencimentos válidos, adiciona uma linha indicando isso
         if (vencimentosValidos.isEmpty()) {
             Vencimento semVencimentos = new Vencimento(0, null);
             vencimentosValidos.add(semVencimentos);
@@ -61,9 +56,6 @@ public class DueDetailsPopupController {
         tableView_due_details.setItems(data);
     }
 
-    /**
-     * Carrega os vencimentos do item na tabela
-     */
     private void loadVencimentos() {
         if (item == null || item.getVencimentos() == null) {
             tableView_due_details.getItems().clear();
@@ -73,7 +65,6 @@ public class DueDetailsPopupController {
         ArrayList<Vencimento> vencimentos = item.getVencimentos();
         ObservableList<Vencimento> data = FXCollections.observableArrayList(vencimentos);
 
-        // Null-safe: verifica se getVencimento() ou getQtd() são nulls antes de usar
         col_date.setCellValueFactory(cell -> {
             Vencimento v = cell.getValue();
             if (v == null) return new SimpleStringProperty("");
