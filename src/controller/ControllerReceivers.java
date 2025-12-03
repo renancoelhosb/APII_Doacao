@@ -16,7 +16,7 @@ public class ControllerReceivers implements Serializable {
         return receptores;
     }
 
-    public void addReceptor(String nome, long identificacao, int telefone, double renda) {
+    public void addReceptor(String nome, long identificacao, long telefone, double renda) {
         this.receptores.add(new Receptor(nome, identificacao, telefone, renda));
     }
     public boolean removeReceptor(long id) {

@@ -16,7 +16,7 @@ public class ControllerDoadores implements Serializable {
         return doador;
     }
     
-    public void addDoador(String nome, long identificacao, int telefone) {
+    public void addDoador(String nome, long identificacao, long telefone) {
         this.doador.add(new Doador(nome, identificacao, telefone, 0));
     }
 

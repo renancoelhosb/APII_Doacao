@@ -6,9 +6,9 @@ public abstract class Pessoa implements Serializable {
     private static final long serialVersionUID = 1L;
     private String nome;
     private long identificacao;
-    private int telefone;
+    private long telefone;
 
-    public Pessoa(String nome, long identificacao, int telefone) {
+    public Pessoa(String nome, long identificacao, long telefone) {
         this.nome = nome;
         this.identificacao = identificacao;
         this.telefone = telefone;
@@ -22,7 +22,7 @@ public abstract class Pessoa implements Serializable {
         return identificacao;
     }
 
-    public int getTelefone() {
+    public long getTelefone() {
         return telefone;
     }
 

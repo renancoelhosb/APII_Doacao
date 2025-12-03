@@ -49,13 +49,9 @@ public class RequestsPaneController {
             controllerDoacoes = rescueDoacoesController();
             if (controllerDoacoes == null) controllerDoacoes = new ControllerDoacoes();
             
-            controllerItems = rescueItemsController();
-            if (controllerItems == null) controllerItems = new ControllerItems();
-
             col_name.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getNome()));
             col_income.setCellValueFactory(cell -> new SimpleDoubleProperty(cell.getValue().getRenda()).asObject());
             col_phone.setCellValueFactory(cell -> new SimpleIntegerProperty(cell.getValue().getTelefone()).asObject());
-
             col_id.setCellValueFactory(cell -> new SimpleLongProperty(cell.getValue().getId()).asObject());
 
             ArrayList<Receptor> listaReceptores = controllerDoacoes.getReceptores();
@@ -143,18 +139,21 @@ public class RequestsPaneController {
             return (ControllerDoacoes)ois.readObject();
         } catch (IOException e) { return new ControllerDoacoes(); }
     }
+    
+    private void saveDoacoesController(ControllerDoacoes c) throws IOException {
+        try (FileOutputStream fos = new FileOutputStream("doacoes.ser");
+                ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+            oos.writeObject(c);
+        }
+    }
+
     private ControllerItems rescueItemsController() throws IOException, ClassNotFoundException {
         try (FileInputStream fis = new FileInputStream("stock.ser");
              ObjectInputStream ois = new ObjectInputStream(fis)) {
             return (ControllerItems)ois.readObject();
         } catch (IOException e) { return new ControllerItems(); }
     }
-    private void saveDoacoesController(ControllerDoacoes c) throws IOException {
-        try (FileOutputStream fos = new FileOutputStream("doacoes.ser");
-             ObjectOutputStream oos = new ObjectOutputStream(fos)) {
-            oos.writeObject(c);
-        }
-    }
+
     private void saveItemsController(ControllerItems c) throws IOException {
         try (FileOutputStream fos = new FileOutputStream("stock.ser");
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {

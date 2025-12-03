@@ -31,7 +31,7 @@ public class DonorsPaneController {
     @FXML private Button btn_delete_donor;
     @FXML private TableView<Doador> tableView;
     @FXML private TableColumn<Doador, String> col_name;
-    @FXML private TableColumn<Doador, Integer> col_phone;
+    @FXML private TableColumn<Doador, Long> col_phone;
     @FXML private TableColumn<Doador, Long> col_id; 
 
     private ControllerDoadores controllerDoadores;
@@ -51,7 +51,7 @@ public class DonorsPaneController {
         if (controllerDoadores.getDoadores() != null) {
             ObservableList<Doador> data = FXCollections.observableArrayList(controllerDoadores.getDoadores());
             col_name.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getNome()));
-            col_phone.setCellValueFactory(cell -> new SimpleIntegerProperty(cell.getValue().getTelefone()).asObject());
+            col_phone.setCellValueFactory(cell -> new SimpleLongProperty(cell.getValue().getTelefone()).asObject());
 
             col_id.setCellValueFactory(cell -> new SimpleLongProperty(cell.getValue().getId()).asObject());
             tableView.setItems(data);

@@ -132,7 +132,7 @@ public class ReceivePaneController {
         try {
 
             long id = Long.parseLong(cpfRaw);
-            int tel = Integer.parseInt(textField_numberPhone.getText().replaceAll("[^0-9]", ""));
+            long tel = Long.parseLong(textField_numberPhone.getText().replaceAll("[^0-9]", ""));
             double renda = Double.parseDouble(textField_income.getText().replace(",", "."));
 
             Receptor r = controllerReceivers.getReceptor(id);

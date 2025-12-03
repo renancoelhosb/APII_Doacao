@@ -106,7 +106,7 @@ public class DonatePaneController {
             String docRaw = tf_cpf.getText().replaceAll("[^0-9]", "");
             long identificacao = Long.parseLong(docRaw);
             
-            int telefone = Integer.parseInt(tf_telefone.getText().replaceAll("[^0-9]", ""));
+            long telefone = Long.parseLong(tf_telefone.getText().replaceAll("[^0-9]", ""));
             int qtd = Integer.parseInt(tf_qtd.getText());
             
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -141,6 +141,7 @@ public class DonatePaneController {
             handleGoBackToMainPane(event);
 
         } catch (NumberFormatException e) {
+            e.printStackTrace();
             showAlert("Erro numérico", "Verifique CPF e Telefone. Apenas números.");
         } catch (DateTimeParseException e) {
             showAlert("Data Inválida", "Use o formato dd/MM/yyyy (ex: 31/12/2025).");

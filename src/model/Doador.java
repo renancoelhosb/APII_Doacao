@@ -5,7 +5,7 @@ public class Doador extends Pessoa {
     private int qtdDoacoes;
 
 
-    public Doador(String nome, long identificacao, int telefone, int qtdDoacoes) {
+    public Doador(String nome, long identificacao, long telefone, int qtdDoacoes) {
         super(nome, identificacao, telefone);
         this.qtdDoacoes = qtdDoacoes;
     }
