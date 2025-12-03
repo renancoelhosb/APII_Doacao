@@ -72,6 +72,22 @@ public class DonatePaneController {
         }
     }
 
+    @FXML
+    private void handleCheckCPFRegister() {
+        String docRaw = tf_cpf.getText().replaceAll("[^0-9]", "");
+        if (docRaw.isEmpty()) return;
+
+        try {
+            long id = Long.parseLong(docRaw);
+            if (controllerDoadores.getDoador(id) != null) {
+                tf_nome.setText(controllerDoadores.getDoador(id).getNome());
+                tf_telefone.setText(String.valueOf(controllerDoadores.getDoador(id).getTelefone()));
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void updateListView() {
         if (controllerItems != null && controllerItems.getItens() != null) {
             ObservableList<Item> data = FXCollections.observableArrayList(controllerItems.getItens());

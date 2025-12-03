@@ -49,7 +49,7 @@
       </AnchorPane>
       <AnchorPane layoutX="163.0" layoutY="19.0" prefHeight="304.0" prefWidth="411.0">
          <children>
-            <TextField fx:id="tf_cpf" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="337.0" promptText="Apenas números" />
+            <TextField fx:id="tf_cpf" layoutX="14.0" layoutY="14.0" onKeyPressed="#handleCheckCPFRegister" prefHeight="25.0" prefWidth="337.0" promptText="Apenas números" />
             <TextField fx:id="tf_nome" layoutX="14.0" layoutY="45.0" prefHeight="18.0" prefWidth="337.0" />
             <TextField fx:id="tf_telefone" layoutX="14.0" layoutY="76.0" prefHeight="25.0" prefWidth="337.0" />
             
