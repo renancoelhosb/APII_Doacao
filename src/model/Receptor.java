@@ -12,4 +12,5 @@ public class Receptor extends Pessoa {
     public double getRenda() {
         return renda;
     }
+    
 }

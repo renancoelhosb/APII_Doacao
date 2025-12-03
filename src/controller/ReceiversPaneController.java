@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -32,7 +31,7 @@ public class ReceiversPaneController {
     @FXML private Button btn_deleteReceiver;
     @FXML private TableView<Receptor> tableView;
     @FXML private TableColumn<Receptor, String> col_name;
-    @FXML private TableColumn<Receptor, Integer> col_phone;
+    @FXML private TableColumn<Receptor, Long> col_phone;
     @FXML private TableColumn<Receptor, Long> col_id; // Alterado para Long
     @FXML private TableColumn<Receptor, Double> col_income;
 
@@ -54,7 +53,7 @@ public class ReceiversPaneController {
             ObservableList<Receptor> data = FXCollections.observableArrayList(controllerReceivers.getReceivers());
             col_income.setCellValueFactory(new PropertyValueFactory<>("renda"));
             col_name.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getNome()));
-            col_phone.setCellValueFactory(cell -> new SimpleIntegerProperty(cell.getValue().getTelefone()).asObject());
+            col_phone.setCellValueFactory(cell -> new SimpleLongProperty(cell.getValue().getTelefone()).asObject());
 
             col_id.setCellValueFactory(cell -> new SimpleLongProperty(cell.getValue().getId()).asObject());
             tableView.setItems(data);

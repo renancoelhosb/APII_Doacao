@@ -1,6 +1,8 @@
 package model;
 
-public class Doacao {
+import java.io.Serializable;
+
+public class Doacao implements Serializable{
     private Receptor receptor;
     private Item item;
 
