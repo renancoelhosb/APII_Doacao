@@ -6,10 +6,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.List;
-
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -20,274 +16,193 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import model.Item;
 import model.Receptor;
 
 public class ReceivePaneController {
 
-    @FXML
-    private AnchorPane anchorPane_main;
+    @FXML private AnchorPane anchorPane_main;
+    @FXML private Button brn_receive;
+    @FXML private Button btn_cancelReceipt;
+    @FXML private CheckBox cbox_iAgree;
+    @FXML private ListView<Item> listView_items;
+    @FXML private TextField textField_identification;
+    @FXML private TextField textField_income;
+    @FXML private TextField textField_name;
+    @FXML private TextField textField_numberPhone;
+    @FXML private TextField textField_qtd;
 
-    @FXML
-    private Button brn_receive;
-
-    @FXML
-    private Button btn_cancelReceipt;
-
-    @FXML
-    private CheckBox cbox_iAgree;
-
-    @FXML
-    private ListView<Item> listView_items;
-
-    @FXML
-    private TextField textField_identification;
-
-    @FXML
-    private TextField textField_income;
-
-    @FXML
-    private TextField textField_name;
-
-    @FXML
-    private TextField textField_numberPhone;
-
-    @FXML
     private ControllerReceivers controllerReceivers;
-
-    @FXML
     private ControllerItems controllerItems;
+    private ControllerDoacoes controllerDoacoes;
 
     @FXML
-    private TextField textField_qtd;
-
-    @FXML
-    void handleGoBackToMainPane(MouseEvent event) {
-        AnchorPane pane;
-        Scene scene;
+    public void initialize() {
         try {
-            pane = (AnchorPane)FXMLLoader.load(getClass().getResource("/view/MainPane.fxml"));
-            scene = this.anchorPane_main.getScene();
-            scene.setRoot(pane);
-        } catch (IOException e) {
-            e.printStackTrace();
-            mostrarErro("Erro ao voltar para a tela principal");
+            FileInputStream fisRec = new FileInputStream("receivers.ser");
+            ObjectInputStream oisRec = new ObjectInputStream(fisRec);
+            controllerReceivers = (ControllerReceivers) oisRec.readObject();
+            fisRec.close();
+            oisRec.close();
+        } catch (Exception e) {
+            controllerReceivers = new ControllerReceivers();
         }
+
+        try {
+            FileInputStream fisItems = new FileInputStream("stock.ser");
+            ObjectInputStream oisItems = new ObjectInputStream(fisItems);
+            controllerItems = (ControllerItems) oisItems.readObject();
+            fisItems.close();
+            oisItems.close();
+        } catch (Exception e) {
+            controllerItems = new ControllerItems();
+        }
+
+        try {
+            FileInputStream fisDoac = new FileInputStream("doacoes.ser");
+            ObjectInputStream oisDoac = new ObjectInputStream(fisDoac);
+            controllerDoacoes = (ControllerDoacoes) oisDoac.readObject();
+            fisDoac.close();
+            oisDoac.close();
+        } catch (Exception e) {
+            controllerDoacoes = new ControllerDoacoes();
+        }
+
+        ArrayList<Item> validItems = new ArrayList<>();
+        if (controllerItems.getItens() != null) {
+            for (Item i : controllerItems.getItens()) {
+                if (i.getQtd() > 0) validItems.add(i);
+            }
+        }
+
+        ObservableList<Item> data = FXCollections.observableArrayList(validItems);
+        listView_items.setItems(data);
+        listView_items.setCellFactory(new Callback<ListView<Item>, ListCell<Item>>() {
+            @Override
+            public ListCell<Item> call(ListView<Item> param) {
+                return new ListCell<Item>() {
+                    @Override
+                    protected void updateItem(Item item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty || item == null) {
+                            setText(null);
+                        } else {
+                            setText(item.getNome() + " (Disp: " + item.getQtd() + ")");
+                        }
+                    }
+                };
+            }
+        });
     }
 
     @FXML
     void handleGoToConfirmationReceiveWindow(MouseEvent event) {
-        if (!validarCampos()) {
+        if (textField_name.getText().isEmpty() || textField_identification.getText().isEmpty() || 
+            textField_numberPhone.getText().isEmpty() || textField_income.getText().isEmpty()) {
+            showAlert(AlertType.WARNING, "Preencha todos os campos.");
             return;
         }
-        
+
+        if (!cbox_iAgree.isSelected()) {
+            showAlert(AlertType.WARNING, "Aceite os termos.");
+            return;
+        }
+
+        String cpfRaw = textField_identification.getText().replaceAll("[^0-9]", "");
+        if (cpfRaw.length() != 11 && cpfRaw.length() != 14) {
+            showAlert(AlertType.WARNING, "CPF (11) ou CNPJ (14) inválido.");
+            return;
+        }
+
         Item itemSelecionado = listView_items.getSelectionModel().getSelectedItem();
         if (itemSelecionado == null) {
-            Alert alert = new Alert(AlertType.WARNING);
-            alert.setTitle("Nenhum item selecionado");
-            alert.setHeaderText("Selecione um item");
-            alert.setContentText("Por favor, selecione um item da lista para receber.");
-            alert.showAndWait();
+            showAlert(AlertType.WARNING, "Selecione um item disponível.");
             return;
         }
-        
-        if (!cbox_iAgree.isSelected()) {
-            Alert alert = new Alert(AlertType.WARNING);
-            alert.setTitle("Termos não aceitos");
-            alert.setHeaderText("Aceite os termos de doação");
-            alert.setContentText("Você precisa estar de acordo com os termos de doação para continuar.");
-            alert.showAndWait();
-            return;
-        }
-        
+
         try {
-            if (controllerReceivers.getReceptor(Integer.parseInt(textField_identification.getText().trim())) == null) {
-                String nome = textField_name.getText().trim();
-                int identificacao = Integer.parseInt(textField_identification.getText().trim());
-                int telefone = Integer.parseInt(textField_numberPhone.getText().trim());
-                double renda = Double.parseDouble(textField_income.getText().trim());
-                controllerReceivers.addReceptor(nome, identificacao, telefone, renda);
-                saveReceiversController(controllerReceivers);
+
+            long id = Long.parseLong(cpfRaw);
+            int tel = Integer.parseInt(textField_numberPhone.getText().replaceAll("[^0-9]", ""));
+            double renda = Double.parseDouble(textField_income.getText().replace(",", "."));
+
+            Receptor r = controllerReceivers.getReceptor(id);
+            if (r == null) {
+                controllerReceivers.addReceptor(textField_name.getText(), id, tel, renda);
+                r = controllerReceivers.getReceptor(id);
             }
 
-            // obter quantidade do TextField (ajuste conforme seus campos)
-            int quantidade;
-            try {
-                quantidade = Integer.parseInt(textField_qtd.getText());
-                if (quantidade <= 0) {
-                    Alert alert = new Alert(AlertType.ERROR);
-                    alert.setTitle("Quantidade inválida");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Digite uma quantidade válida.");
-                    alert.showAndWait();
-                    return;
-                }
-            } catch (NumberFormatException e) {
-                Alert alert = new Alert(AlertType.ERROR);
-                alert.setTitle("Quantidade inválida");
-                alert.setHeaderText(null);
-                alert.setContentText("Digite uma quantidade válida.");
-                alert.showAndWait();
-                return;
-            }
+            controllerDoacoes.insertDoacao(r, itemSelecionado);
 
-            
+            saveController(controllerReceivers, "receivers.ser");
+            saveController(controllerDoacoes, "doacoes.ser");
 
-            AnchorPane pane;
-            Stage newStage;
-            Stage currentStage = (Stage)((Node) event.getSource()).getScene().getWindow();
-            
-            pane = (AnchorPane)FXMLLoader.load(getClass().getResource("/view/ConfirmationReceiveWindow.fxml"));
-            newStage = new Stage();
-            newStage.initOwner(currentStage);
-            newStage.initModality(Modality.WINDOW_MODAL);
-            newStage.setScene(new Scene(pane));
-            newStage.setTitle("Confirmação - DoAção");
-            newStage.setResizable(false);
-            newStage.showAndWait();
-            
+            showConfirmation(event);
             handleGoBackToMainPane(event);
 
-        } catch (NumberFormatException e) {
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Erro de formato");
-            alert.setHeaderText("Formato inválido");
-            alert.setContentText("Por favor, verifique se todos os campos numéricos estão preenchidos corretamente.");
-            alert.showAndWait();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            mostrarErro("Erro ao abrir janela de confirmação");
-        }
-    }
-    
-    @FXML
-    public void initialize() {
-        try {
-            controllerReceivers = rescueReceiversController();
-
-        } catch (IOException | ClassNotFoundException e) {
-            controllerReceivers = new ControllerReceivers();
-        }
-        
-        try {
-            controllerItems = rescueItemsController();
-            ArrayList<Item> lista = controllerItems.getItens();
-            ObservableList<Item> dataItems = FXCollections.observableArrayList(lista);
-            listView_items.setItems(dataItems);
-
-            // opcional: customizar exibição dos itens no ListView
-            listView_items.setCellFactory(lv -> new javafx.scene.control.ListCell<Item>() {
-                @Override
-                protected void updateItem(Item item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (empty || item == null) {
-                        setText(null);
-                    } else {
-                        setText(item.getNome()); // ou qualquer outro campo que queira exibir
-                    }
-                }
-            });
-
-        } catch (IOException | ClassNotFoundException e) {
-            controllerItems = new ControllerItems();
+            showAlert(AlertType.ERROR, "Erro ao processar.");
         }
     }
 
     @FXML
     void handleCheckId(KeyEvent event) {
-        String id_ = textField_identification.getText().trim();
-        int id = Integer.parseInt(id_);
-        if (id_.length() >= 11 && controllerReceivers.getReceptor(id) != null) {
-            textField_name.setText(controllerReceivers.getReceptor(id).getNome());
-            textField_numberPhone.setText(String.valueOf(controllerReceivers.getReceptor(id).getTelefone()));
-            textField_income.setText(String.valueOf(controllerReceivers.getReceptor(id).getRenda()));
-        }
-    }
-    
-    private void validarFormulario() {
-        boolean camposPreenchidos = !textField_name.getText().trim().isEmpty() &&
-                                   !textField_identification.getText().trim().isEmpty() &&
-                                   !textField_numberPhone.getText().trim().isEmpty() &&
-                                   !textField_income.getText().trim().isEmpty();
-        
-        boolean itemSelecionado = listView_items.getSelectionModel().getSelectedItem() != null;
-        boolean termosAceitos = cbox_iAgree.isSelected();
-        
-        brn_receive.setDisable(!(camposPreenchidos && itemSelecionado && termosAceitos));
-    }
-    
-    private boolean validarCampos() {
-        if (textField_name.getText().trim().isEmpty() ||
-            textField_identification.getText().trim().isEmpty() ||
-            textField_numberPhone.getText().trim().isEmpty() ||
-            textField_income.getText().trim().isEmpty()) {
-            
-            Alert alert = new Alert(AlertType.WARNING);
-            alert.setTitle("Campos obrigatórios");
-            alert.setHeaderText("Preencha todos os campos");
-            alert.setContentText("Todos os campos são obrigatórios para realizar a solicitação.");
-            alert.showAndWait();
-            return false;
-        }
-        
         try {
-            Integer.parseInt(textField_identification.getText().trim());
-            Integer.parseInt(textField_numberPhone.getText().trim());
-            Double.parseDouble(textField_income.getText().trim());
-        } catch (NumberFormatException e) {
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Formato inválido");
-            alert.setHeaderText("Campos numéricos inválidos");
-            alert.setContentText("CPF/CNPJ, Telefone e Renda devem ser números válidos.");
-            alert.showAndWait();
-            return false;
+            String txt = textField_identification.getText().replaceAll("[^0-9]", "");
+            if (!txt.isEmpty() && (txt.length() == 11 || txt.length() == 14)) {
+                long id = Long.parseLong(txt);
+                Receptor r = controllerReceivers.getReceptor(id);
+                if (r != null) {
+                    textField_name.setText(r.getNome());
+                    textField_numberPhone.setText(String.valueOf(r.getTelefone()));
+                    textField_income.setText(String.valueOf(r.getRenda()));
+                }
+            }
+        } catch (Exception e) {}
+    }
+
+    @FXML
+    void handleGoBackToMainPane(MouseEvent event) {
+        try {
+            AnchorPane pane = (AnchorPane)FXMLLoader.load(getClass().getResource("/view/MainPane.fxml"));
+            this.anchorPane_main.getScene().setRoot(pane);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        
-        return true;
     }
     
-    private void mostrarErro(String mensagem) {
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.setTitle("Erro");
-        alert.setHeaderText("Ocorreu um erro");
-        alert.setContentText(mensagem);
+    private void showAlert(AlertType type, String msg) {
+        Alert alert = new Alert(type);
+        alert.setContentText(msg);
         alert.showAndWait();
     }
     
-    private ControllerReceivers rescueReceiversController() throws IOException, ClassNotFoundException {
-        ControllerReceivers controllerUsers;
-        FileInputStream flow = new FileInputStream("receivers.ser");
-        ObjectInputStream readControllerReceivers = new ObjectInputStream(flow);
-        controllerUsers = (ControllerReceivers)readControllerReceivers.readObject();
-        flow.close();
-        readControllerReceivers.close();
-        return controllerUsers;
-    }
-
-    private void saveReceiversController(ControllerReceivers controllerReceivers) throws IOException {
-        FileOutputStream fos = new FileOutputStream("receivers.ser");
+    private void saveController(Object controller, String filename) throws IOException {
+        FileOutputStream fos = new FileOutputStream(filename);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
-        oos.writeObject(controllerReceivers);
+        oos.writeObject(controller);
         oos.close();
         fos.close();
     }
 
-    private ControllerItems rescueItemsController() throws IOException, ClassNotFoundException {
-        FileInputStream flow = new FileInputStream("stock.ser");
-        ObjectInputStream readControllerItems = new ObjectInputStream(flow);
-        controllerItems = (ControllerItems)readControllerItems.readObject();
-        flow.close();
-        readControllerItems.close();
-        return controllerItems;
+    private void showConfirmation(MouseEvent event) throws IOException {
+        Stage currentStage = (Stage)((Node) event.getSource()).getScene().getWindow();
+        AnchorPane pane = (AnchorPane)FXMLLoader.load(getClass().getResource("/view/ConfirmationReceiveWindow.fxml"));
+        Stage newStage = new Stage();
+        newStage.initOwner(currentStage);
+        newStage.initModality(Modality.WINDOW_MODAL);
+        newStage.setScene(new Scene(pane));
+        newStage.setResizable(false);
+        newStage.showAndWait();
     }
-
-    
 }

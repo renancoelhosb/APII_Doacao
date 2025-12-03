@@ -5,8 +5,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,45 +27,34 @@ import model.Doador;
 
 public class DonorsPaneController {
 
-    @FXML
-    private AnchorPane anchorPane_main;
-
-    @FXML
-    private Button btn_delete_donor;
-
-    @FXML
-    private TableView<Doador> tableView;
-
-    @FXML
-    private TableColumn<Doador, String> col_name;
-
-    @FXML
-    private TableColumn<Doador, Integer> col_phone;
-
-    @FXML
-    private TableColumn<Doador, Integer> col_id;
+    @FXML private AnchorPane anchorPane_main;
+    @FXML private Button btn_delete_donor;
+    @FXML private TableView<Doador> tableView;
+    @FXML private TableColumn<Doador, String> col_name;
+    @FXML private TableColumn<Doador, Integer> col_phone;
+    @FXML private TableColumn<Doador, Long> col_id; 
 
     private ControllerDoadores controllerDoadores;
 
     @FXML
     public void initialize() {
         try {
-            controllerDoadores = rescueDonorsController();
-
-            // popula tabela se houver itens
-            if (controllerDoadores != null && controllerDoadores.getDoadores() != null) {
-                ObservableList<Doador> data = FXCollections.observableArrayList(controllerDoadores.getDoadores());
-
-                // usando lambdas para garantir compatibilidade com nomes dos getters
-                col_name.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getNome()));
-                col_phone.setCellValueFactory(cell -> new SimpleIntegerProperty(cell.getValue().getTelefone()).asObject());
-                col_id.setCellValueFactory(cell -> new SimpleIntegerProperty(cell.getValue().getId()).asObject());
-
-                tableView.setItems(data);
-            }
-
-        } catch (IOException | ClassNotFoundException e) {
+            FileInputStream fis = new FileInputStream("doadores.ser");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            controllerDoadores = (ControllerDoadores) ois.readObject();
+            fis.close();
+            ois.close();
+        } catch (Exception e) {
             controllerDoadores = new ControllerDoadores();
+        }
+
+        if (controllerDoadores.getDoadores() != null) {
+            ObservableList<Doador> data = FXCollections.observableArrayList(controllerDoadores.getDoadores());
+            col_name.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getNome()));
+            col_phone.setCellValueFactory(cell -> new SimpleIntegerProperty(cell.getValue().getTelefone()).asObject());
+
+            col_id.setCellValueFactory(cell -> new SimpleLongProperty(cell.getValue().getId()).asObject());
+            tableView.setItems(data);
         }
     }
 
@@ -75,54 +64,37 @@ public class DonorsPaneController {
         
         if (doadorSelecionado == null) {
             Alert alert = new Alert(AlertType.WARNING);
-            alert.setTitle("Nenhuma seleção");
-            alert.setHeaderText("Nenhum doador selecionado");
-            alert.setContentText("Por favor, selecione um doador na tabela.");
+            alert.setContentText("Selecione um doador.");
             alert.showAndWait();
             return;
         }
 
-        AnchorPane pane;
-        Stage newStage;
-        Stage currentStage;
-        FXMLLoader loader;
         try {
-            currentStage = (Stage)((Node) event.getSource()).getScene().getWindow();
-            loader = new FXMLLoader(getClass().getResource("/view/Popup.fxml"));
-            pane = (AnchorPane) loader.load();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Popup.fxml"));
+            AnchorPane pane = (AnchorPane) loader.load();
             
-            newStage = new Stage();
-            newStage.initOwner(currentStage);
+            PopupController popup = loader.getController();
+            popup.setText("Doador removido!");
+
+            Stage newStage = new Stage();
+            newStage.initOwner(((Node) event.getSource()).getScene().getWindow());
             newStage.initModality(Modality.WINDOW_MODAL);
             newStage.setScene(new Scene(pane));
-            newStage.setTitle("Confirmação - DoAção");
             newStage.setResizable(false);
             newStage.showAndWait();
             
-            this.controllerDoadores.removeDoador(doadorSelecionado);
-            saveDonorsController(this.controllerDoadores);
+            controllerDoadores.removeDoador(doadorSelecionado);
+            
+            FileOutputStream fos = new FileOutputStream("doadores.ser");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(controllerDoadores);
+            oos.close();
+            fos.close();
+            
             initialize();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private ControllerDoadores rescueDonorsController() throws IOException, ClassNotFoundException {
-        ControllerDoadores controllerUsers;
-        FileInputStream flow = new FileInputStream("doadores.ser");
-        ObjectInputStream readControllerDoadores = new ObjectInputStream(flow);
-        controllerUsers = (ControllerDoadores)readControllerDoadores.readObject();
-        flow.close();
-        readControllerDoadores.close();
-        return controllerUsers;
-    }
-
-    private void saveDonorsController(ControllerDoadores controllerDoadores) throws IOException {
-        FileOutputStream fos = new FileOutputStream("doadores.ser");
-        ObjectOutputStream oos = new ObjectOutputStream(fos);
-        oos.writeObject(controllerDoadores);
-        oos.close();
-        fos.close();
     }
 }

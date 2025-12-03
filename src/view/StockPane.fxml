@@ -21,7 +21,7 @@
             </TableView>
             <HBox alignment="CENTER" prefHeight="41.0" prefWidth="370.0">
                <children>
-                  <Button fx:id="btn_register_product" mnemonicParsing="false" onMouseClicked="#handleRegisterProduct" text="Cadastrar Produtos" />
+                  <Button fx:id="btn_register_product" mnemonicParsing="false" onMouseClicked="#handleRegisterProduct" style="-fx-background-color: black;" text="Cadastrar Produtos" textFill="WHITE" />
                </children>
             </HBox>
          </children>

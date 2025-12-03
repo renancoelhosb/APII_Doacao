@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.IOException;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -15,14 +14,9 @@ import javafx.stage.Stage;
 
 public class NewProductWindowController {
 
-    @FXML
-    private Button btn_cancel;
-
-    @FXML
-    private Button btn_registerProduct;
-
-    @FXML
-    private TextField textField_product_name;
+    @FXML private Button btn_cancel;
+    @FXML private Button btn_registerProduct;
+    @FXML private TextField textField_product_name;
 
     private boolean itemCreatedSucessfully = false;
 
@@ -42,30 +36,27 @@ public class NewProductWindowController {
 
     @FXML
     void handleRegisterProduct(MouseEvent event) {
-        // Implement product registration logic here
-
-        AnchorPane pane;
-        Stage newStage;
-        Stage currentStage;
-        FXMLLoader loader;
         try {
-            currentStage = (Stage)((Node) event.getSource()).getScene().getWindow();
-            loader = new FXMLLoader(getClass().getResource("/view/Popup.fxml"));
-            pane = (AnchorPane) loader.load();
-            newStage = new Stage();
+            Stage currentStage = (Stage)((Node) event.getSource()).getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Popup.fxml"));
+            AnchorPane pane = (AnchorPane) loader.load();
+            
+            PopupController popup = loader.getController();
+            popup.setText("Produto cadastrado!");
+
+            Stage newStage = new Stage();
             newStage.initOwner(currentStage);
             newStage.initModality(Modality.WINDOW_MODAL);
             newStage.setScene(new Scene(pane));
             newStage.setTitle("Popup - DoAção");
             newStage.setResizable(false);
             newStage.showAndWait();
-            currentStage.close();
+            
             itemCreatedSucessfully = true;
+            currentStage.close();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
     }
-
 }

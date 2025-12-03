@@ -45,22 +45,20 @@ public class CreateLoginMasterWindowController {
             JOptionPane.ERROR_MESSAGE
             );
         } else {
-            // Logic to create master user goes here
+    
             JOptionPane.showMessageDialog(
             null,
             "Usuário mestre criado com sucesso!",
             "Sucesso",
             JOptionPane.INFORMATION_MESSAGE
             );
+            
             this.createdMasterUser = true;
 
-            // Fecha a janela modal (Stage) atual
+
             Stage stage = (Stage) anchorPane_main.getScene().getWindow();
             stage.close();
         }
-        
-        return;
-        // Implement master user creation logic here
     }
 
     public boolean isCreatedMasterUser() {

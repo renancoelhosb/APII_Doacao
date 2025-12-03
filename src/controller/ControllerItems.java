@@ -3,15 +3,15 @@ package controller;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
-
 import model.Item;
 import model.Vencimento;
 
-public class ControllerItems implements Serializable{
-
+public class ControllerItems implements Serializable {
+    
+    private static final long serialVersionUID = 1L;
     private ArrayList<Item> itens = new ArrayList<>();
-    private static int cont = 0;
 
+    
     public ControllerItems() {
     }
 
@@ -45,35 +45,36 @@ public class ControllerItems implements Serializable{
         boolean removeu = false;
         LocalDate hoje = LocalDate.now();
 
-        // criando cópia para evitar ConcurrentModificationException
+
         ArrayList<Item> copiaItens = new ArrayList<Item>(itens);
         
         for (Item item : copiaItens) {
             ArrayList<Vencimento> vencidos = new ArrayList<Vencimento>();
             
             for (Vencimento v : item.getVencimentos()) {
-                if (v.getVencimento().isBefore(hoje)) {
-                    // Diminuir a quantidade total
+                if (v.getVencimento() != null && v.getVencimento().isBefore(hoje)) {
+
                     item.setQtd(item.getQtd() - v.getQtd());
                     vencidos.add(v);
                     removeu = true;
                 }
             }
-            
-            // Remover vencimentos expirados
+
             item.getVencimentos().removeAll(vencidos);
-            
-            // Se o item não tem mais vencimentos, o remove da lista principal
-            if (item.getVencimentos().isEmpty() || item.getQtd() <= 0) {
-                itens.remove(item);
-            }
+ 
         }
 
         return removeu;
     }
 
     public void adicionarItem(String nome) {
-        cont++;
-        itens.add(new Item(cont, nome));
+       
+        int proxId = 1;
+        for (Item i : itens) {
+            if (i.getCodigo() >= proxId) {
+                proxId = i.getCodigo() + 1;
+            }
+        }
+        itens.add(new Item(proxId, nome));
     }
 }

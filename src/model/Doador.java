@@ -1,9 +1,11 @@
 package model;
 
 public class Doador extends Pessoa {
+    private static final long serialVersionUID = 1L;
     private int qtdDoacoes;
 
-    public Doador(String nome, int identificacao, int telefone, int qtdDoacoes) {
+
+    public Doador(String nome, long identificacao, int telefone, int qtdDoacoes) {
         super(nome, identificacao, telefone);
         this.qtdDoacoes = qtdDoacoes;
     }

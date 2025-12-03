@@ -1,9 +1,11 @@
 package controller;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import model.Doador;
 
-public class ControllerDoadores {
+public class ControllerDoadores implements Serializable {
+    private static final long serialVersionUID = 1L;
     private ArrayList<Doador> doador;
 
     public ControllerDoadores() {
@@ -14,11 +16,11 @@ public class ControllerDoadores {
         return doador;
     }
     
-    public void addDoador(String nome, int identificacao, int telefone) {
+    public void addDoador(String nome, long identificacao, int telefone) {
         this.doador.add(new Doador(nome, identificacao, telefone, 0));
     }
 
-    public boolean removeDoador(int id) {
+    public boolean removeDoador(long id) {
         Doador d = getDoador(id);
         if (d != null) {
             return this.doador.remove(d);
@@ -30,7 +32,7 @@ public class ControllerDoadores {
         return this.doador.remove(d);
     }
 
-    public Doador getDoador(int id) {
+    public Doador getDoador(long id) {
         for (Doador r : this.doador) {
             if (r.getId() == id) {
                 return r;

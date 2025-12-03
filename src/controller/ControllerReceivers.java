@@ -1,9 +1,11 @@
 package controller;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import model.Receptor;
 
-public class ControllerReceivers {
+public class ControllerReceivers implements Serializable {
+    private static final long serialVersionUID = 1L;
     private ArrayList<Receptor> receptores;
 
     public ControllerReceivers() {
@@ -13,12 +15,11 @@ public class ControllerReceivers {
     public ArrayList<Receptor> getReceivers() {
         return receptores;
     }
-    
-    public void addReceptor(String nome, int identificacao, int telefone, double renda) {
+
+    public void addReceptor(String nome, long identificacao, int telefone, double renda) {
         this.receptores.add(new Receptor(nome, identificacao, telefone, renda));
     }
-
-    public boolean removeReceptor(int id) {
+    public boolean removeReceptor(long id) {
         Receptor r = getReceptor(id);
         if (r != null) {
             return this.receptores.remove(r);
@@ -29,8 +30,7 @@ public class ControllerReceivers {
     public boolean removeReceptor(Receptor r) {
         return this.receptores.remove(r);
     }
-
-    public Receptor getReceptor(int id) {
+    public Receptor getReceptor(long id) {
         for (Receptor r : this.receptores) {
             if (r.getId() == id) {
                 return r;

@@ -1,11 +1,14 @@
 package model;
 
-public abstract class Pessoa {
+import java.io.Serializable;
+
+public abstract class Pessoa implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String nome;
-    private int identificacao;
+    private long identificacao;
     private int telefone;
 
-    public Pessoa(String nome, int identificacao, int telefone) {
+    public Pessoa(String nome, long identificacao, int telefone) {
         this.nome = nome;
         this.identificacao = identificacao;
         this.telefone = telefone;
@@ -15,7 +18,7 @@ public abstract class Pessoa {
         return nome;
     }
 
-    public int getId() {
+    public long getId() {
         return identificacao;
     }
 
@@ -30,5 +33,4 @@ public abstract class Pessoa {
     public void setTelefone(int telefone) {
         this.telefone = telefone;
     }
-
 }
