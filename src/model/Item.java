@@ -1,9 +1,10 @@
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class Item {
+public class Item implements Serializable{
     private int codigo;
     private String nome;
     private ArrayList<Vencimento> vencimentos = new ArrayList<>();
@@ -14,6 +15,13 @@ public class Item {
         this.nome = nome;
         this.vencimentos.add(new Vencimento(qtd, vencimento));
         this.qtd = qtd;
+    }
+    
+    public Item(int codigo, String nome) {
+        this.codigo = codigo;
+        this.nome = nome;
+        this.vencimentos.add(new Vencimento(0, null));
+        this.qtd = 0;
     }
 
     public int getCodigo(){

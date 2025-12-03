@@ -24,6 +24,16 @@ public class NewProductWindowController {
     @FXML
     private TextField textField_product_name;
 
+    private boolean itemCreatedSucessfully = false;
+
+    public String getProductName() {
+        return textField_product_name.getText();
+    }
+
+    public boolean isItemCreatedSucessfully() {
+        return itemCreatedSucessfully;
+    }
+
     @FXML
     void handleGoBackToStockPane(MouseEvent event) {
         Stage currentStage = (Stage)((Node) event.getSource()).getScene().getWindow();
@@ -50,6 +60,7 @@ public class NewProductWindowController {
             newStage.setResizable(false);
             newStage.showAndWait();
             currentStage.close();
+            itemCreatedSucessfully = true;
 
         } catch (IOException e) {
             e.printStackTrace();

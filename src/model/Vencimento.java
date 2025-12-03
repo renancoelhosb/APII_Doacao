@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Vencimento {
+public class Vencimento implements Serializable{
     private int qtd; 
     private LocalDate vencimento;
 

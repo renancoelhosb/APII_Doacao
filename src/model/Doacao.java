@@ -1,16 +1,16 @@
 package model;
 
 public class Doacao {
-    private Doador doador;
+    private Receptor receptor;
     private Item item;
 
-    public Doacao(Doador doador, Item item) {
-        this.doador = doador;
+    public Doacao(Receptor receptor, Item item) {
+        this.receptor = receptor;
         this.item = item;
     }
 
-    public Doador getDoador() {
-        return doador;
+    public Receptor getReceptor() {
+        return receptor;
     }
 
     public Item getItem() {

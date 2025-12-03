@@ -12,7 +12,7 @@
    <children>
       <VBox prefHeight="370.0" prefWidth="410.0">
          <children>
-            <TableView prefHeight="290.0" prefWidth="370.0">
+            <TableView fx:id="tableView" prefHeight="290.0" prefWidth="370.0">
                <columns>
                   <TableColumn fx:id="col_name" prefWidth="195.0" text="Nome" />
                   <TableColumn fx:id="col_phone" minWidth="0.0" text="Telefone" />

@@ -80,7 +80,7 @@ public class LoginWindowController {
         } else {
             JOptionPane.showMessageDialog(
             null,
-            user.getSenha(),
+            "Credenciais inválidas. Tente novamente.",
             "Erro",
             JOptionPane.ERROR_MESSAGE
             );

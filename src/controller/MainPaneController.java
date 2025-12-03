@@ -114,22 +114,6 @@ public class MainPaneController {
         }
     }
 
-    private ControllerUsers rescueUserController() {
-        try {
-            ControllerUsers controllerUsers;
-            FileInputStream flow = new FileInputStream("users.ser");
-            ObjectInputStream readControllerUsers = new ObjectInputStream(flow);
-            controllerUsers = (ControllerUsers)readControllerUsers.readObject();
-            flow.close();
-            readControllerUsers.close();
-            return controllerUsers;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     private void openLoginForMasterUserSetup() {
         // garante que a cena/Stage já esteja disponível
         if (this.anchorPane_main.getScene() == null) {

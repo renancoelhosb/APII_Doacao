@@ -84,6 +84,7 @@ public class UserPaneController {
             a = (AnchorPane)FXMLLoader.load(getClass().getResource("/view/ReceiversPane.fxml"));
             this.anchorPane_expose.getChildren().setAll(a);
         } catch (IOException ex) {
+            ex.printStackTrace();
             System.out.println("Erro ao carregar FXML");
         }
     }
@@ -106,6 +107,7 @@ public class UserPaneController {
             a = (AnchorPane)FXMLLoader.load(getClass().getResource("/view/StockPane.fxml"));
             this.anchorPane_expose.getChildren().setAll(a);
         } catch (IOException ex) {
+            // ex.printStackTrace();
             System.out.println("Erro ao carregar FXML");
         }
     }
@@ -119,22 +121,6 @@ public class UserPaneController {
         } catch (IOException ex) {
             System.out.println("Erro ao carregar FXML");
         }
-    }
-
-    private ControllerUsers rescueUserController() {
-        try {
-            ControllerUsers controllerUsers;
-            FileInputStream flow = new FileInputStream("users.ser");
-            ObjectInputStream readControllerUsers = new ObjectInputStream(flow);
-            controllerUsers = (ControllerUsers)readControllerUsers.readObject();
-            flow.close();
-            readControllerUsers.close();
-            return controllerUsers;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
 }

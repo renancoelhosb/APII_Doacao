@@ -1,16 +1,18 @@
 package controller;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 import model.Item;
 import model.Vencimento;
 
-public class ControllerItens {
+public class ControllerItems implements Serializable{
 
     private ArrayList<Item> itens = new ArrayList<>();
+    private static int cont = 0;
 
-    public ControllerItens() {
+    public ControllerItems() {
     }
 
     public ArrayList<Item> getItens() {
@@ -35,15 +37,19 @@ public class ControllerItens {
         return false;
     }
 
+    public boolean removeItem(Item item){
+        return itens.remove(item);
+    }
+
     public boolean removeVencidos() {
         boolean removeu = false;
         LocalDate hoje = LocalDate.now();
 
         // criando cópia para evitar ConcurrentModificationException
-        ArrayList<Item> copiaItens = new ArrayList<>(itens);
+        ArrayList<Item> copiaItens = new ArrayList<Item>(itens);
         
         for (Item item : copiaItens) {
-            ArrayList<Vencimento> vencidos = new ArrayList<>();
+            ArrayList<Vencimento> vencidos = new ArrayList<Vencimento>();
             
             for (Vencimento v : item.getVencimentos()) {
                 if (v.getVencimento().isBefore(hoje)) {
@@ -66,7 +72,8 @@ public class ControllerItens {
         return removeu;
     }
 
-    public void adicionarItem(Item item) {
-        itens.add(item);
+    public void adicionarItem(String nome) {
+        cont++;
+        itens.add(new Item(cont, nome));
     }
 }
