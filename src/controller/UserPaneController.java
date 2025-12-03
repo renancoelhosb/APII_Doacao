@@ -96,6 +96,7 @@ public class UserPaneController {
             a = (AnchorPane)FXMLLoader.load(getClass().getResource("/view/RequestsPane.fxml"));
             this.anchorPane_expose.getChildren().setAll(a);
         } catch (IOException ex) {
+            ex.printStackTrace();
             System.out.println("Erro ao carregar FXML");
         }
     }

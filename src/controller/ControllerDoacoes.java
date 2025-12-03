@@ -53,7 +53,17 @@ public class ControllerDoacoes implements Serializable {
         }
         return new ArrayList<>(itensUnicos);
     }
-
+    
+    // método auxiliar: verifica se receptor tem pedidos pendentes
+    public boolean receptorTemPedidos(Receptor receptor) {
+        for (Doacao doacao : doacoes) {
+            if (doacao.getReceptor().equals(receptor)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     public void removeDoacao(Receptor receptor, Item item) {
         doacoes.removeIf(doacao -> 
             doacao.getReceptor().equals(receptor) && 
@@ -65,16 +75,7 @@ public class ControllerDoacoes implements Serializable {
     public boolean concludeRequest(Receptor receptor, Item item) {
         int tamanhoAntes = doacoes.size();
         removeDoacao(receptor, item);
-        return doacoes.size() < tamanhoAntes; // retorna true se removeu algo
+        return doacoes.size() < tamanhoAntes;
     }
 
-    // método auxiliar: verifica se receptor tem pedidos pendentes
-    public boolean receptorTemPedidos(Receptor receptor) {
-        for (Doacao doacao : doacoes) {
-            if (doacao.getReceptor().equals(receptor)) {
-                return true;
-            }
-        }
-        return false;
-    }
 }

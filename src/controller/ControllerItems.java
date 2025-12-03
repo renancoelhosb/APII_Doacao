@@ -77,4 +77,15 @@ public class ControllerItems implements Serializable {
         }
         itens.add(new Item(proxId, nome));
     }
+
+    
+    public void adicionarItem(String nome, LocalDate vencimento, int qtd) {
+        int proxId = 1;
+        for (Item i : itens) {
+            if (i.getCodigo() >= proxId) {
+                proxId = i.getCodigo() + 1;
+            }
+        }
+        itens.add(new Item(proxId, nome, vencimento, qtd));
+    }
 }

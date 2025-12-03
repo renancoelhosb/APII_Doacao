@@ -5,8 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -25,9 +23,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-
 import model.Item;
-import model.Vencimento;
 
 public class StockPaneController {
 
@@ -55,11 +51,11 @@ public class StockPaneController {
         try {
             controllerItems = rescueItemsController();
 
-            // popula tabela se houver itens
+
             if (controllerItems != null && controllerItems.getItens() != null) {
                 ObservableList<Item> data = FXCollections.observableArrayList(controllerItems.getItens());
 
-                // usando lambdas para garantir compatibilidade com nomes dos getters
+                
                 col_item.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getNome()));
                 col_qtd.setCellValueFactory(cell -> new SimpleIntegerProperty(cell.getValue().getQtd()).asObject());
                 col_due.setCellFactory(new Callback<TableColumn<Item, Void>, TableCell<Item, Void>>() {
@@ -91,6 +87,23 @@ public class StockPaneController {
 
         } catch (IOException | ClassNotFoundException e) {
             controllerItems = new ControllerItems();
+            controllerItems.adicionarItem("Arroz");
+            controllerItems.adicionarItem("Feijão");
+            controllerItems.adicionarItem("Macarrão (500g)");
+            controllerItems.adicionarItem("Açúcar");
+            controllerItems.adicionarItem("Café");
+            controllerItems.adicionarItem("Leite (1L)");
+            controllerItems.adicionarItem("Óleo de soja (900ml)");
+            controllerItems.adicionarItem("Farinha de trigo");
+            controllerItems.adicionarItem("Sal");
+            controllerItems.adicionarItem("Fubá");
+
+            try {
+                saveItemsController(controllerItems);
+                initialize();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
         }   
     }
 
@@ -99,7 +112,7 @@ public class StockPaneController {
         AnchorPane pane;
         Stage newStage;
         Stage currentStage;
-        NewProductWindowController controller;   //// Not used but kept for consistency
+        NewProductWindowController controller;  
         FXMLLoader loader;
         try {
             currentStage = (Stage)((Node) event.getSource()).getScene().getWindow();
@@ -148,7 +161,6 @@ public class StockPaneController {
             AnchorPane pane = (AnchorPane) loader.load();
             DueDetailsPopupController popupCtrl = loader.getController();
             
-            // passa o item para o popup exibir os detalhes
             popupCtrl.setItem(item);
 
             Stage currentStage = (Stage) table_items.getScene().getWindow();

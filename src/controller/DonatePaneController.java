@@ -23,12 +23,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-
+import model.Doador;
 import model.Item;
 import model.Vencimento;
 
@@ -58,8 +59,19 @@ public class DonatePaneController {
         try {
 
             controllerItems = rescueItemsController();
-            if (controllerItems == null) controllerItems = new ControllerItems();
-            
+            if (controllerItems == null || controllerItems.getItens().isEmpty()) {
+                controllerItems.adicionarItem("Arroz");
+                controllerItems.adicionarItem("Feijão");
+                controllerItems.adicionarItem("Macarrão (500g)");
+                controllerItems.adicionarItem("Açúcar");
+                controllerItems.adicionarItem("Café");
+                controllerItems.adicionarItem("Leite (1L)");
+                controllerItems.adicionarItem("Óleo de soja (900ml)");
+                controllerItems.adicionarItem("Farinha de trigo");
+                controllerItems.adicionarItem("Sal");
+                controllerItems.adicionarItem("Fubá");
+                saveItemsController(controllerItems);
+            }
 
             controllerDoadores = rescueDoadoresController();
             if (controllerDoadores == null) controllerDoadores = new ControllerDoadores();
@@ -68,22 +80,6 @@ public class DonatePaneController {
             setupMasks();
 
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    private void handleCheckCPFRegister() {
-        String docRaw = tf_cpf.getText().replaceAll("[^0-9]", "");
-        if (docRaw.isEmpty()) return;
-
-        try {
-            long id = Long.parseLong(docRaw);
-            if (controllerDoadores.getDoador(id) != null) {
-                tf_nome.setText(controllerDoadores.getDoador(id).getNome());
-                tf_telefone.setText(String.valueOf(controllerDoadores.getDoador(id).getTelefone()));
-            }
-        } catch (NumberFormatException e) {
             e.printStackTrace();
         }
     }
@@ -258,6 +254,32 @@ public class DonatePaneController {
         try (FileOutputStream fos = new FileOutputStream("doadores.ser");
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {
             oos.writeObject(c);
+        }
+    }
+
+    @FXML
+    void handleCheckCPFRegister(KeyEvent event) {
+        // Remove tudo que não é número
+        String cpfRaw = tf_cpf.getText().replaceAll("[^0-9]", "");
+        
+        if (cpfRaw.length() < 11) {
+            return;
+        }
+        
+        try {
+            long cpfNumber = Long.parseLong(cpfRaw);
+            Doador doador = controllerDoadores.getDoador(cpfNumber); // remove o cast para (int)
+            
+            if (doador != null) {
+                tf_nome.setText(doador.getNome());
+                tf_telefone.setText(String.valueOf(doador.getTelefone()));
+            } else {
+                // Limpa campos se não encontrar doador
+                tf_nome.clear();
+                tf_telefone.clear();
+            }
+        } catch (NumberFormatException e) {
+            // Ignora se ainda estiver digitando ou valor inválido
         }
     }
 }
