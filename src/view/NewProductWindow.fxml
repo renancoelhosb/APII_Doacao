@@ -12,7 +12,7 @@
    <children>
       <AnchorPane prefHeight="150.0" prefWidth="250.0">
          <children>
-            <VBox alignment="CENTER" prefHeight="150.0" prefWidth="300.0" spacing="5.0">
+            <VBox alignment="CENTER" prefHeight="150.0" prefWidth="300.0" spacing="5.0" style="-fx-background-color: white;">
                <children>
                   <Label text="Nome do produto:">
                      <padding>
@@ -22,8 +22,8 @@
                   <TextField fx:id="textField_product_name" />
                   <HBox alignment="CENTER" prefHeight="40.0" prefWidth="260.0" spacing="20.0">
                      <children>
-                        <Button fx:id="btn_registerProduct" mnemonicParsing="false" onMouseClicked="#handleRegisterProduct" text="Cadastrar" />
-                        <Button fx:id="btn_cancel" mnemonicParsing="false" onMouseClicked="#handleGoBackToStockPane" text="Cancelar" />
+                        <Button fx:id="btn_registerProduct" mnemonicParsing="false" onMouseClicked="#handleRegisterProduct" style="-fx-background-color: black;" text="Cadastrar" textFill="WHITE" />
+                        <Button fx:id="btn_cancel" mnemonicParsing="false" onMouseClicked="#handleGoBackToStockPane" style="-fx-background-color: black;" text="Cancelar" textFill="WHITE" />
                      </children>
                   </HBox>
                </children>

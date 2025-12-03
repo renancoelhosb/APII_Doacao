@@ -1,7 +1,6 @@
 package controller;
 
 import java.util.ArrayList;
-
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -11,10 +10,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-
 import model.Item;
 import model.Vencimento;
 
@@ -37,17 +34,11 @@ public class DueDetailsPopupController {
 
     private Item item;
 
-    /**
-     * Recebe o Item e popula a tabela com seus vencimentos
-     */
     public void setItem(Item item) {
         this.item = item;
         loadVencimentos();
     }
 
-    /**
-     * Carrega os vencimentos do item na tabela
-     */
     private void loadVencimentos() {
         if (item == null || item.getVencimentos() == null) {
             tableView_due_details.getItems().clear();
@@ -57,11 +48,10 @@ public class DueDetailsPopupController {
         ArrayList<Vencimento> vencimentos = item.getVencimentos();
         ObservableList<Vencimento> data = FXCollections.observableArrayList(vencimentos);
 
-        // Null-safe: verifica se getVencimento() ou getQtd() são nulls antes de usar
+        
         col_date.setCellValueFactory(cell -> {
             Vencimento v = cell.getValue();
             if (v == null) return new SimpleStringProperty("");
-            // supondo que getVencimento() retorne java.time.LocalDate — trate null
             if (v.getVencimento() == null) return new SimpleStringProperty("");
             return new SimpleStringProperty(v.getVencimento().toString());
         });

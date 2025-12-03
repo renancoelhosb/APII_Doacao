@@ -1,27 +1,21 @@
 package controller;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
-
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.scene.Node;
 
 public class MainPaneController {
 
@@ -115,7 +109,6 @@ public class MainPaneController {
     }
 
     private void openLoginForMasterUserSetup() {
-        // garante que a cena/Stage já esteja disponível
         if (this.anchorPane_main.getScene() == null) {
             Platform.runLater(this::openLoginForMasterUserSetup);
             return;

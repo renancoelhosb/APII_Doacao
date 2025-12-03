@@ -30,34 +30,24 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label layoutX="18.0" layoutY="125.0" text="Item:">
+            <Label layoutX="18.0" layoutY="115.0" text="Item:">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label layoutX="18.0" layoutY="240.0" text="Validade:">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Label layoutX="18.0" layoutY="270.0" text="Qtd:">
+            <Label layoutX="18.0" layoutY="274.0" text="Validade:">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="163.0" layoutY="19.0" prefHeight="304.0" prefWidth="411.0">
+      <AnchorPane layoutX="163.0" layoutY="19.0" prefHeight="272.0" prefWidth="411.0">
          <children>
-            <TextField fx:id="tf_cpf" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="337.0" promptText="Apenas números" />
-            <TextField fx:id="tf_nome" layoutX="14.0" layoutY="45.0" prefHeight="18.0" prefWidth="337.0" />
-            <TextField fx:id="tf_telefone" layoutX="14.0" layoutY="76.0" prefHeight="25.0" prefWidth="337.0" />
-            
-            <!-- Lista onde aparecerão os produtos cadastrados pelo ADM -->
-            <ListView fx:id="listView_items" layoutX="14.0" layoutY="105.0" prefHeight="120.0" prefWidth="337.0" />
-            
-            <TextField fx:id="tf_validade" layoutX="14.0" layoutY="235.0" prefHeight="25.0" prefWidth="337.0" promptText="dd/MM/yyyy" />
-            <TextField fx:id="tf_qtd" layoutX="14.0" layoutY="265.0" prefHeight="25.0" prefWidth="100.0" text="1" />
+            <ListView layoutX="14.0" layoutY="107.0" prefHeight="138.0" prefWidth="337.0" />
+            <TextField layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="337.0" />
+            <TextField layoutX="14.0" layoutY="45.0" prefHeight="18.0" prefWidth="337.0" />
+            <TextField layoutX="14.0" layoutY="76.0" prefHeight="25.0" prefWidth="337.0" />
          </children>
       </AnchorPane>
       <AnchorPane layoutX="25.0" layoutY="340.0" prefHeight="30.0" prefWidth="477.0">
@@ -94,6 +84,6 @@
             </AnchorPane>
          </children>
       </AnchorPane>
-      <CheckBox fx:id="cb_termos" layoutX="39.0" layoutY="323.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="262.0" style="-fx-background-color: white;" text="Estou de acordo com os termos de doação" />
+      <CheckBox layoutX="39.0" layoutY="323.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="262.0" style="-fx-background-color: white;" text="Estou de acordo com os termos de doação" />
    </children>
 </AnchorPane>

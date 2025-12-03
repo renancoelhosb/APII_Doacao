@@ -39,8 +39,7 @@ public class Item implements Serializable{
     public int getQtd(){ 
         return qtd; 
     }
-    
-    // Adicionando setter para qtd
+
     public void setQtd(int qtd) {
         this.qtd = qtd;
     }
@@ -48,8 +47,6 @@ public class Item implements Serializable{
     public boolean removerDoEstoque(int qtdRemover) {
         if (qtdRemover <= this.qtd) {
             this.qtd -= qtdRemover;
-            
-            // removendo da lista de vencimentos
             int restante = qtdRemover;
             for (Vencimento v : vencimentos) {
                 if (restante <= 0) break;
@@ -62,8 +59,6 @@ public class Item implements Serializable{
                     v.setQtd(0);
                 }
             }
-            
-            // Remover vencimentos com quantidade 0
             vencimentos.removeIf(v -> v.getQtd() == 0);
             
             return true;

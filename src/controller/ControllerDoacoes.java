@@ -44,8 +44,6 @@ public class ControllerDoacoes {
     }
 
     public void concludeRequest(Receptor receptor, Item item) {
-        // Lógica para concluir a solicitação
         removeDoacao(receptor, item);
-        // Outras operações podem ser adicionadas aqui
     }
 }

@@ -13,7 +13,7 @@
    <children>
       <AnchorPane prefHeight="100.0" prefWidth="250.0">
          <children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="250.0">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="250.0" style="-fx-background-color: white;">
                <children>
                   <VBox alignment="CENTER" prefHeight="68.0" prefWidth="166.0">
                      <children>

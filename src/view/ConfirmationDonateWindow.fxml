@@ -19,12 +19,12 @@
                      <children>
                         <Label prefHeight="18.0" prefWidth="224.0" text="Doação recebida!">
                            <font>
-                              <Font name="Comic Sans MS Bold" size="18.0" />
+                              <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
                         <Label prefHeight="66.0" prefWidth="186.0" text="Envie os alimentos para a instituição em até 48h" wrapText="true">
                            <font>
-                              <Font name="Comic Sans MS" size="14.0" />
+                              <Font size="14.0" />
                            </font>
                         </Label>
                      </children>

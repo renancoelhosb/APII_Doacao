@@ -10,7 +10,7 @@
 
 <AnchorPane fx:id="anchorPane_main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="370.0" prefWidth="410.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.StockPaneController">
    <children>
-      <VBox prefHeight="370.0" prefWidth="410.0">
+      <VBox prefHeight="370.0" prefWidth="410.0" style="-fx-background-color: white;">
          <children>
             <TableView fx:id="table_items" prefHeight="289.0" prefWidth="370.0">
               <columns>

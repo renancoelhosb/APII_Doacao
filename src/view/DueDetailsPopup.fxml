@@ -6,10 +6,10 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="anchorPane_main" prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DueDetailsPopupController">
+<AnchorPane fx:id="anchorPane_main" prefHeight="300.0" prefWidth="400.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DueDetailsPopupController">
     <children>
         <Label layoutX="15.0" layoutY="15.0" style="-fx-font-size: 14; -fx-font-weight: bold;" text="Detalhes de Vencimento" />
-        <Button fx:id="btn_close_due_details" layoutX="328.0" layoutY="260.0" onAction="#handleCloseDueDetails" onMouseClicked="#handleCloseDueDetails" text="Fechar" />
+        <Button fx:id="btn_close_due_details" layoutX="328.0" layoutY="260.0" onAction="#handleCloseDueDetails" onMouseClicked="#handleCloseDueDetails" style="-fx-background-color: black;" text="Fechar" textFill="WHITE" />
       <TableView fx:id="tableView_due_details" layoutX="20.0" layoutY="35.0" prefHeight="200.0" prefWidth="360.0">
         <columns>
           <TableColumn fx:id="col_qtd" prefWidth="100.0" style="-fx-alignment: CENTER;" text="Qtd" />
