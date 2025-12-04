@@ -23,7 +23,6 @@ public class ControllerDoacoes implements Serializable {
         return this.doacoes.add(new Doacao(receptor, item));
     }
 
-    // CORRIGIDO: retorna receptores únicos (sem duplicatas)
     public ArrayList<Receptor> getReceptores() {
         Set<Receptor> receptoresUnicos = new HashSet<>();
         for (Doacao doacao : doacoes) {
@@ -32,7 +31,6 @@ public class ControllerDoacoes implements Serializable {
         return new ArrayList<>(receptoresUnicos);
     }
 
-    // retorna todas as doações de um receptor
     public ArrayList<Doacao> getDoacao(Receptor receptor) {
         ArrayList<Doacao> doacoesReceptor = new ArrayList<Doacao>();
         for (Doacao doacao : doacoes) {
@@ -43,7 +41,6 @@ public class ControllerDoacoes implements Serializable {
         return doacoesReceptor;
     }
 
-    // retorna itens pedidos por um receptor (sem duplicatas)
     public ArrayList<Item> getItensPorReceptor(Receptor receptor) {
         Set<Item> itensUnicos = new HashSet<>();
         for (Doacao doacao : doacoes) {
@@ -54,7 +51,6 @@ public class ControllerDoacoes implements Serializable {
         return new ArrayList<>(itensUnicos);
     }
     
-    // método auxiliar: verifica se receptor tem pedidos pendentes
     public boolean receptorTemPedidos(Receptor receptor) {
         for (Doacao doacao : doacoes) {
             if (doacao.getReceptor().equals(receptor)) {
@@ -71,7 +67,6 @@ public class ControllerDoacoes implements Serializable {
         );
     }
 
-    // MELHORADO: conclui pedido e retorna se foi bem-sucedido
     public boolean concludeRequest(Receptor receptor, Item item) {
         int tamanhoAntes = doacoes.size();
         removeDoacao(receptor, item);

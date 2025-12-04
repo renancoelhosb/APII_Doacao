@@ -1,9 +1,6 @@
 package controller;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -108,7 +105,6 @@ public class UserPaneController {
             a = (AnchorPane)FXMLLoader.load(getClass().getResource("/view/StockPane.fxml"));
             this.anchorPane_expose.getChildren().setAll(a);
         } catch (IOException ex) {
-            // ex.printStackTrace();
             System.out.println("Erro ao carregar FXML");
         }
     }

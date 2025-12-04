@@ -32,7 +32,7 @@ public class ReceiversPaneController {
     @FXML private TableView<Receptor> tableView;
     @FXML private TableColumn<Receptor, String> col_name;
     @FXML private TableColumn<Receptor, Long> col_phone;
-    @FXML private TableColumn<Receptor, Long> col_id; // Alterado para Long
+    @FXML private TableColumn<Receptor, Long> col_id;
     @FXML private TableColumn<Receptor, Double> col_income;
 
     private ControllerReceivers controllerReceivers;

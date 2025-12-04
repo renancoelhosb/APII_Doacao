@@ -259,7 +259,6 @@ public class DonatePaneController {
 
     @FXML
     void handleCheckCPFRegister(KeyEvent event) {
-        // Remove tudo que não é número
         String cpfRaw = tf_cpf.getText().replaceAll("[^0-9]", "");
         
         if (cpfRaw.length() < 11) {
@@ -268,18 +267,18 @@ public class DonatePaneController {
         
         try {
             long cpfNumber = Long.parseLong(cpfRaw);
-            Doador doador = controllerDoadores.getDoador(cpfNumber); // remove o cast para (int)
+            Doador doador = controllerDoadores.getDoador(cpfNumber); 
             
             if (doador != null) {
                 tf_nome.setText(doador.getNome());
                 tf_telefone.setText(String.valueOf(doador.getTelefone()));
             } else {
-                // Limpa campos se não encontrar doador
+                
                 tf_nome.clear();
                 tf_telefone.clear();
             }
         } catch (NumberFormatException e) {
-            // Ignora se ainda estiver digitando ou valor inválido
+            
         }
     }
 }

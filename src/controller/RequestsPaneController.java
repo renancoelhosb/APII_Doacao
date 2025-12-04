@@ -67,7 +67,6 @@ public class RequestsPaneController {
             controllerDoacoes = rescueDoacoesController();
             controllerItems = rescueItemsController();
 
-            // Configura tabela de receptores
             ArrayList<Receptor> listaReceptores = controllerDoacoes.getReceptores();
             ObservableList<Receptor> dataRec = FXCollections.observableArrayList(listaReceptores);
 
@@ -78,7 +77,6 @@ public class RequestsPaneController {
 
             tableView_receptores.setItems(dataRec);
 
-            // Listener para seleção de receptor
             tableView_receptores.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
                 if (newSelection != null) {
                     receptorSelecionado = newSelection;
@@ -86,17 +84,14 @@ public class RequestsPaneController {
                 }
             });
 
-            // Configura tabela de itens
             col_item_name.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getNome()));
             col_item_qtd.setCellValueFactory(cell -> new SimpleIntegerProperty(cell.getValue().getQtd()).asObject());
 
-            // Listener para seleção de item
             tableView_itens.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
                 itemSelecionado = newSelection;
                 atualizarBotoes();
             });
 
-            // Centralizar colunas
             col_name.setStyle("-fx-alignment: CENTER;");
             col_income.setStyle("-fx-alignment: CENTER;");
             col_phone.setStyle("-fx-alignment: CENTER;");
@@ -138,7 +133,6 @@ public class RequestsPaneController {
             return;
         }
 
-        // Busca o item no estoque pelo nome
         Item itemEstoqueTemp = null;
         for (Item item : controllerItems.getItens()) {
             if (item.getNome().equals(itemSelecionado.getNome())) {
@@ -153,7 +147,6 @@ public class RequestsPaneController {
             return;
         }
 
-        // Verifica quantidade disponível
         int qtdSolicitada = itemSelecionado.getQtd();
         int qtdEstoque = itemEstoque.getQtd();
 
@@ -165,7 +158,6 @@ public class RequestsPaneController {
             return;
         }
 
-        // Confirmação
         Alert confirmacao = new Alert(AlertType.CONFIRMATION);
         confirmacao.setTitle("Confirmar doação");
         confirmacao.setHeaderText("Efetivar doação");
@@ -179,22 +171,12 @@ public class RequestsPaneController {
         confirmacao.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 try {
-                    // NOVO: Remove quantidade usando FIFO (primeiro a vencer)
                     itemEstoque.removerQuantidade(qtdSolicitada);
-                    
-                    // NOVO: Limpa vencimentos com quantidade zero
                     itemEstoque.limparVencimentosZerados();
-                    
-                    // Remove a solicitação
                     controllerDoacoes.concludeRequest(receptorSelecionado, itemSelecionado);
-                    
-                    // Salva alterações
                     saveItemsController(controllerItems);
                     saveDoacoesController(controllerDoacoes);
-                    
                     mostrarAlerta("Sucesso", "Doação efetivada com sucesso!\nItens retirados dos lotes mais próximos do vencimento.", AlertType.INFORMATION);
-                    
-                    // Atualiza a interface
                     atualizarInterface();
                     
                 } catch (IOException e) {
@@ -212,7 +194,6 @@ public class RequestsPaneController {
             return;
         }
 
-        // Confirmação
         Alert confirmacao = new Alert(AlertType.CONFIRMATION);
         confirmacao.setTitle("Cancelar solicitação");
         confirmacao.setHeaderText("Cancelar solicitação de doação");
@@ -226,15 +207,9 @@ public class RequestsPaneController {
         confirmacao.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 try {
-                    // Remove a solicitação
                     controllerDoacoes.removeDoacao(receptorSelecionado, itemSelecionado);
-                    
-                    // Salva alterações
                     saveDoacoesController(controllerDoacoes);
-                    
                     mostrarAlerta("Sucesso", "Solicitação cancelada com sucesso!", AlertType.INFORMATION);
-                    
-                    // Atualiza a interface
                     atualizarInterface();
                     
                 } catch (IOException e) {
@@ -246,12 +221,10 @@ public class RequestsPaneController {
     }
 
     private void atualizarInterface() {
-        // Recarrega a lista de receptores
         ArrayList<Receptor> listaReceptores = controllerDoacoes.getReceptores();
         ObservableList<Receptor> dataRec = FXCollections.observableArrayList(listaReceptores);
         tableView_receptores.setItems(dataRec);
 
-        // Se ainda há um receptor selecionado, atualiza seus pedidos
         if (receptorSelecionado != null) {
             boolean receptorAindaTemPedidos = controllerDoacoes.receptorTemPedidos(receptorSelecionado);
             if (receptorAindaTemPedidos) {

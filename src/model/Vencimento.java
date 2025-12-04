@@ -16,7 +16,6 @@ public class Vencimento implements Serializable{
         return qtd;
     }
     
-    // Adicionando setter que estava faltando
     public void setQtd(int qtd) {
         this.qtd = qtd;
     }

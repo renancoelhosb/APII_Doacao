@@ -115,7 +115,6 @@ public class MainPaneController {
     }
 
     private void openLoginForMasterUserSetup() {
-        // garante que a cena/Stage já esteja disponível
         if (this.anchorPane_main.getScene() == null) {
             Platform.runLater(this::openLoginForMasterUserSetup);
             return;

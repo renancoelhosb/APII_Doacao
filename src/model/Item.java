@@ -44,7 +44,7 @@ public class Item implements Serializable{
         return qtd; 
     }
     
-    // Adicionando setter para qtd
+    
     public void setQtd(int qtd) {
         this.qtd = qtd;
     }
@@ -53,7 +53,7 @@ public class Item implements Serializable{
         if (qtdRemover <= this.qtd) {
             this.qtd -= qtdRemover;
             
-            // removendo da lista de vencimentos
+            
             int restante = qtdRemover;
             for (Vencimento v : vencimentos) {
                 if (restante <= 0) break;
@@ -67,9 +67,8 @@ public class Item implements Serializable{
                 }
             }
             
-            // Remover vencimentos com quantidade 0
-            vencimentos.removeIf(v -> v.getQtd() == 0);
             
+            vencimentos.removeIf(v -> v.getQtd() == 0);
                 return true;
             }
             return false;
@@ -77,11 +76,8 @@ public class Item implements Serializable{
     
         public void removerQuantidade(int qtdRemover) {
         if (qtdRemover <= 0) return;
-        
-        // Remove vencimentos com data null antes de ordenar
+
         vencimentos.removeIf(v -> v.getVencimento() == null);
-        
-        // Ordena vencimentos por data (mais próximo primeiro)
         vencimentos.sort((v1, v2) -> {
             if (v1.getVencimento() == null && v2.getVencimento() == null) return 0;
             if (v1.getVencimento() == null) return 1;
@@ -91,28 +87,25 @@ public class Item implements Serializable{
         
         int qtdRestante = qtdRemover;
         
-        // Remove dos vencimentos mais antigos primeiro (FIFO)
         for (int i = 0; i < vencimentos.size() && qtdRestante > 0; i++) {
             Vencimento v = vencimentos.get(i);
             int qtdVencimento = v.getQtd();
             
             if (qtdVencimento <= qtdRestante) {
-                // Remove todo o vencimento
                 qtdRestante -= qtdVencimento;
                 vencimentos.remove(i);
-                i--; // Ajusta índice após remoção
+                i--; 
             } else {
-                // Remove parcialmente
                 v.setQtd(qtdVencimento - qtdRestante);
                 qtdRestante = 0;
             }
         }
         
-        // Atualiza quantidade total
+        
         this.qtd -= qtdRemover;
     }
     
-    // Método auxiliar para limpar vencimentos com quantidade zero ou data null
+    
     public void limparVencimentosZerados() {
         vencimentos.removeIf(v -> v.getQtd() <= 0 || v.getVencimento() == null);
     }
