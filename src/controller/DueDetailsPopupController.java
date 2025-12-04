@@ -67,7 +67,6 @@ public class DueDetailsPopupController {
         col_date.setCellValueFactory(cell -> {
             Vencimento v = cell.getValue();
             if (v == null) return new SimpleStringProperty("");
-            // supondo que getVencimento() retorne java.time.LocalDate — trate null
             if (v.getVencimento() == null) return new SimpleStringProperty("");
             return new SimpleStringProperty(v.getVencimento().toString());
         });
